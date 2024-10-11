@@ -1,21 +1,17 @@
 body {
-  margin: 5vh 10vw 5vh 10vw;
-}
-
-.mainText {
-  text-decoration: none;
-  color: white;
-}
-
-.mainText:hover {
-  color: black;
+  margin: 5vh 10vw;
 }
 
 a {
-  color: white;
   text-decoration: none;
+  color: white;
 }
 
+a:hover {
+  color: #444;
+}
+
+/* 메인 타이틀 스타일 */
 .main {
   font-size: 50px;
   font-weight: 600;
@@ -27,21 +23,33 @@ a {
   height: 100px;
   line-height: 100px;
   background: linear-gradient(45deg, #e599f7, #b197fc);
-  border-radius: 5px 5px 0px 0px;
+  border-radius: 5px 5px 0 0;
 }
 
-.first > ol {
-  width: 100px;
+/* 사이드바 스타일 */
+.side-bar {
+  background: linear-gradient(to top, #748ffc, #9775fa);
+  border-right: 1px solid grey;
+  width: 15vw;
+  min-width: 200px;
+  height: 100%;
+  border-radius: 0 0 0 5px;
+}
+
+.side-bar > ul {
   margin-top: 20px;
+  padding-left: 0;
 }
 
-.first > ol > li {
-  list-style: none;
+.side-bar > ul > li {
+  text-align: center;
   font-size: 30px;
   font-weight: 600;
   margin-top: 10px;
+  color: white;
 }
 
+/* 메인 콘텐츠 영역 */
 .container {
   display: flex;
   height: 70vh;
@@ -49,39 +57,26 @@ a {
   background-color: #f8f9fa;
 }
 
-.feature {
-  margin-top: 10px;
-}
-
-.first {
-  background: linear-gradient(to top, #748ffc, #9775fa);
-  border-right: 1px solid grey;
-  height: 100%;
-  width: 15vw;
-  min-width: 200px;
-  border-radius: 0px 0px 0px 5px;
-}
-
+/* 콘텐츠 섹션 스타일 */
 .second {
   background-color: #f8f9fa;
-  height: 100%;
   width: 85vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 0px 0px 5px 0px;
+  border-radius: 0 0 5px 0;
 }
 
 .title {
-  width: auto;
-  font-weight: 600;
-  align-items: center;
   text-align: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  font-weight: 600;
 }
 
+/* 콘텐츠 텍스트 스타일 */
 .content {
   font-size: 18px;
   text-align: center;
@@ -93,6 +88,7 @@ a {
   color: #5f3dc4;
 }
 
+/* 이미지 스타일 */
 .image {
   width: 300px;
   height: 300px;
@@ -100,7 +96,7 @@ a {
   margin-bottom: 20px;
   -webkit-filter: blur(3px);
   filter: blur(3px);
-  transition: .3s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
 
 .image:hover {
@@ -108,6 +104,7 @@ a {
   filter: blur(0);
 }
 
+/* 아이콘 박스 */
 .iconBox {
   display: flex;
   justify-content: center;
