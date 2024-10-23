@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clock⏰</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <div class="container">
+      <div class="clock-icon"></div>
+      <div id="clock" class="light">
+          <div class="battery_container">
+          <div class="battery_wrapper">
+            <div class="battery">🔋 배터리: 100% 
+            </div>
+                <button class="charging-status">충전</button>
+            <div class="button-holder">
+                <a class="button">테마 변경</a>
+            </div>
+        </div>
+          </div>
+        <div class="display">
+            <div class="weekdays"></div>
+            <div class="date-time">
+                <div class="date"></div> 
+                <div class="time"></div> 
+            </div>
+            <div class="add-alarm">
+                <label>알람 추가</label>
+                <input type="time" class="alarm-time">
+                <button class="add-alarm-btn">추가</button>
+            </div>
+        </div>
+        <div class="alarm-section">
+          <div class="alarm-list">
+          </div>
+        </div>
+    </div>
+          
+        </div>
+   
+
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.0.0/moment.min.js"></script>
+		<script src="assets/js/script.js"></script>
+
+
+</body>
+</html>
