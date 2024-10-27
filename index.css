@@ -135,9 +135,9 @@ transform: translateX(50px) translateY(-10px);
   transform: translateX(-30px)
 }
 
-.history ul li::before {
-  content: '🔍 ';
-  margin-right: 2px; /* 목록 기호와 텍스트 간의 간격 조정 */
+.history-icon {
+  margin-right: 5px;  /* 텍스트와 아이콘 사이 간격 조정 */
+  vertical-align: middle;  /* 텍스트와 수직 가운데 정렬 */
 }
 
 .history h3 {

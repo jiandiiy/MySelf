@@ -12,92 +12,92 @@ const formatNumber = (number) => {
 const updateDisplay = (value) => {
     display.textContent = formatNumber(value);
 };
-
-const addHistory = (record) => {
+const addHistory = (calculation, result) => {
     const listItem = document.createElement('li');
-    
-    // `=` 기호를 기준으로 분리하되 공백을 적절히 포함
-    const recordParts = record.split('=');
-    const calculationSpan = document.createElement('span');
-    const resultSpan = document.createElement('span');
-    
-    // 연산 과정과 결과를 서로 다른 줄로 표시
-    calculationSpan.textContent = recordParts[0].trim(); // 첫 줄에 연산 과정
-    resultSpan.textContent = `= ${recordParts[1].trim()}`; // 다음 줄에 결과
-    
-    // 세로로 나란히 배치
-    listItem.appendChild(calculationSpan);
-    listItem.appendChild(document.createElement('br')); // 줄 바꿈 추가
-    listItem.appendChild(resultSpan);
-    
+
+    // 왼쪽 아이콘을 위한 span 요소 생성
+    const iconSpan = document.createElement('span');
+    iconSpan.classList.add('history-icon'); // 아이콘 스타일을 위한 클래스 추가
+    iconSpan.textContent = '🔹'; // 예시 아이콘 (필요에 따라 수정 가능)
+
+    // 연산 과정과 결과를 위한 span 요소 생성
+    const calculationText = document.createElement('span');
+    calculationText.textContent = `${calculation} = ${formatNumber(result)}`;
+
+    // 아이콘과 계산 텍스트를 listItem에 추가
+    listItem.appendChild(iconSpan);
+    listItem.appendChild(calculationText);
+
     historyList.appendChild(listItem);
 };
 
-
-
-document.querySelectorAll('.button_number').forEach(button => {
-    button.addEventListener('click', function() {
-        if (!operator) {
-            firstNumber += this.textContent;
-            updateDisplay(parseFloat(firstNumber)); // 숫자로 변환하여 포맷
-        } else {
-            secondNumber += this.textContent;
-            updateDisplay(parseFloat(secondNumber)); // 숫자로 변환하여 포맷
-        }
-    });
-});
-
-document.querySelectorAll('.button_operator').forEach(button => {
-    button.addEventListener('click', function() {
-        if (firstNumber) {
-            operator = this.textContent;
-        }
-    });
-});
-
-document.querySelector('.button_equal').addEventListener('click', function() {
-    if (firstNumber && secondNumber && operator) {
-        firstNumber = parseFloat(firstNumber);
-        secondNumber = parseFloat(secondNumber);
-        
-        switch (operator) {
-            case '+':
-                result = firstNumber + secondNumber;
-                break;
-            case '-':
-                result = firstNumber - secondNumber;
-                break;
-            case 'x':
-                result = firstNumber * secondNumber;
-                break;
-            case '÷':
-                result = firstNumber / secondNumber;
-                break;
-        }
-        
-        const historyRecord = `${formatNumber(firstNumber)} ${operator} ${formatNumber(secondNumber)} = ${formatNumber(result)}`;
-        addHistory(historyRecord);
-        updateDisplay(result);
-        firstNumber = result.toString();
-        secondNumber = '';
-        operator = '';
-    }
-});
-
-document.querySelector('#button_c').addEventListener('click', function() {
+// 초기화 함수
+const resetCalculator = (clearHistory = true) => {
     firstNumber = '';
     secondNumber = '';
     operator = '';
     result = '';
     updateDisplay('0');
-    historyList.innerHTML = ''; // 기록도 초기화
-});
+    if (clearHistory) historyList.innerHTML = '';
+};
 
-document.querySelector('#button_ce').addEventListener('click', function() {
-    if (operator) {
-        secondNumber = '';
-    } else {
-        firstNumber = '';
+// 버튼 컨테이너에 이벤트 리스너 등록
+const buttonContainer = document.querySelector('.button_container');
+
+buttonContainer.addEventListener('click', function(event) {
+    const target = event.target;
+
+    // 숫자 버튼 처리
+    if (target.classList.contains('button_number')) {
+        if (!operator) {
+            firstNumber += target.textContent;
+            updateDisplay(parseFloat(firstNumber));
+        } else {
+            secondNumber += target.textContent;
+            updateDisplay(parseFloat(secondNumber));
+        }
     }
-    updateDisplay('0');
+    // 연산자 버튼 처리
+    else if (target.classList.contains('button_operator')) {
+        if (firstNumber) {
+            operator = target.textContent;
+        }
+    }
+    // = 버튼 처리
+    else if (target.classList.contains('button_equal')) {
+        if (firstNumber && secondNumber && operator) {
+            firstNumber = parseFloat(firstNumber);
+            secondNumber = parseFloat(secondNumber);
+            
+            switch (operator) {
+                case '+':
+                    result = firstNumber + secondNumber;
+                    break;
+                case '-':
+                    result = firstNumber - secondNumber;
+                    break;
+                case 'x':
+                    result = firstNumber * secondNumber;
+                    break;
+                case '÷':
+                    result = firstNumber / secondNumber;
+                    break;
+            }
+            
+            const calculation = `${formatNumber(firstNumber)} ${operator} ${formatNumber(secondNumber)}`;
+            addHistory(calculation, result);  // 연산 과정과 결과 전달
+            updateDisplay(result);
+            firstNumber = result.toString();
+            secondNumber = '';
+            operator = '';
+        }
+    }
+    // C 버튼 (전체 초기화) 처리
+    else if (target.id === 'button_c') {
+        resetCalculator();
+    }
+    // CE 버튼 (현재 입력만 초기화) 처리
+    else if (target.id === 'button_ce') {
+        resetCalculator(false);
+    }
 });
