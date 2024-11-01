@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원가입</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+  <div class="background">
+    <div class="outer__box">
+      <form id="signupForm" onsubmit="return form_check();"> 
+      <div class="wrapper">
+        <div class="wrapper__head">회원 가입을 위해<br>정보를 입력해주세요.
+        </div>   
+        <div class="wrapper__name">
+          <label for="u_name" class="label">*이름</label>
+          <input type="text" id="u_name" name="u_name" class="email__input">
+          <span class="err_u_name"></span>
+        </div>
+        <div class="wrapper__id">
+          <label for="u_id" class="label">*아이디</label>
+          <div class="id__input-container">
+            <input type="text" id="u_id" name="u_id" class="email__input">
+            <button type="button" class="check">중복체크</button>
+          </div>
+          <span class="err_id"></span>
+        </div>
+        
+        <div class="wrapper__password" >
+          <label for="pwd" class="label">*비밀번호</label>
+          <input type="password" id="pwd" name="pwd" class="email__input">
+          <span class="err_pwd"></span>
+        </div>
+
+        <div class="wrapper__password__check">
+          <label for="repwd" class="label">*비밀번호 확인</label>
+          <input type="password" id="repwd" name="repwd" class="email__input">
+          <span class="err_repwd"></span>
+        </div>
+
+        <div class="wrapper__gender">
+          <div class="gender__radio">
+            <input type="radio" name="gender">남성
+          </div>
+          <div class="gender__radio">
+            <input type="radio" name="gender">여성
+          </div>
+        </div>
+          <div class="wrapper__agree">
+            <input type="checkbox" id="agree" name="agree">이용약관 개인정보 수집 및 이용, 마케팅 활용 선택에 모두 동의합니다.
+          </div>
+          <div class="wrapper__join">
+            <button class="join__button">가입하기</button>
+      </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src="main.js"></script>
+</body>
+</html>

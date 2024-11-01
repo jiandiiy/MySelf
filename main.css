@@ -1,0 +1,190 @@
+*{
+  box-sizing: border-box;
+}
+
+.background {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 1920px;
+  height: 1200px;
+  padding: 0;
+  background-color: #ffffff;
+}
+
+.outer__box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 670px;
+  height: 960px;
+  border: 1px solid #AACDFF;
+  box-shadow: 7px 7px 39px 0px #0068FF40;
+  padding: 50px 0 20px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 470px;
+  height: 900px;
+  gap: 30px; 
+}
+
+.wrapper__head {
+  width: 466px;
+  height: 94px;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 47.36px;
+  margin: 0;
+  padding: 0;
+  color: #0086ff;
+}
+
+.wrapper__id, .wrapper__name, .wrapper__password, .wrapper__password__check {
+  display: flex;
+  flex-direction: column;
+  width: 466px;
+  height: 80px;
+  gap: 5px;
+}
+
+.label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.id__input-container {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  gap: 10px; /* input과 버튼 사이의 간격 */
+}
+
+.email__input {
+  flex: 1; /* input이 가로로 확장되도록 설정 */
+  height: 40px;
+  border-width: 0px;
+  border-bottom: 1px solid gray;
+}
+
+.email__input:focus {
+  outline: none;
+  border-bottom: 1px solid #0068FF;
+}
+
+.check {
+  height: 40px;
+  padding: 0 10px;
+  border: 1px solid #0086ff;
+  background-color: #ffffff;
+  border-radius: 5px;
+  color: #0086ff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.check:hover {
+  background-color: #AACDFF;
+  color: #ffffff;
+}
+
+
+
+.wrapper__gender {
+  display: flex;
+  height: 24px;
+  align-items: center;
+}
+
+.gender__radio {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 24px;
+  font-size: 16px;
+  font-weight: 400;
+  gap: 0.25rem;
+  padding: 0 10px 0;
+}
+
+[type="radio"] {
+  appearance: none;
+  border: 1px solid gray;
+  border-radius: 50%;
+  width: 1.25em;
+  height: 1.25em;
+  margin: 0 0 2px;
+  padding: 0;
+  vertical-align: middle;
+}
+
+[type="radio"]:not :checked {
+  border-color: gray;
+}
+[type="radio"]:checked {
+  border: 0.4em solid #0086ff;
+}
+
+.wrapper__agree {
+  display: flex;
+  height: 21px;
+  align-items: center;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 20.7px;
+  padding: 10px 0;
+  gap: 0.50rem;
+  margin: 0 0 10px;
+  
+}
+
+[type="checkbox"] {
+  appearance: none;
+  border: 1px solid gray;
+  width: 1.25em;
+  height: 1.25em;
+  margin: 0 0 2px;
+  padding: 0;
+  vertical-align: middle;
+}
+
+[type="checkbox"]:not :checked {
+  border-color: red;
+}
+
+[type="checkbox"]:checked {
+  border: 0.4em solid #0086ff;
+
+}
+
+.wrapper__join{
+  width: 100%;
+  height: 75px;
+}
+
+.join__button {
+  width: 100%;
+  height: 75px;
+  border: 1px solid #0086ff;
+  background-color: #ffffff;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #0086ff;
+}
+
+.join__button:hover {
+  background-color: #AACDFF;
+  color: #ffffff;
+}
+.join__button:focus {
+  background-color: #0086ff;
+  color: #ffffff;
+}
