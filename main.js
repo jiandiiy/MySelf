@@ -1,89 +1,109 @@
-let users = []; // 회원 정보를 저장하는 배열
+document.addEventListener("DOMContentLoaded", () => {
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  let isIdChecked = false; // 중복 체크 완료 여부
 
-// 아이디 중복 체크 함수
-function checkDuplicateId() {
-  const u_id = document.getElementById("u_id");
-  const err_txt = document.querySelector(".err_id");
+  function checkDuplicateId() {
+    users = JSON.parse(localStorage.getItem("users")) || [];
+    const u_id = document.getElementById("u_id");
+    const err_txt = document.querySelector(".err_id"); // 아이디 중복 체크 오류 메시지
 
-  // 아이디 중복 여부를 배열에서 확인
-  if (users.some(user => user.id === u_id.value.trim())) {
-    err_txt.textContent = "* 이미 사용 중인 아이디입니다.";
-    err_txt.style.color = "red";
+    console.log("checkDuplicateId() 호출됨");
+
+    if (u_id.value.trim() === "") {
+      showError("err_id", "아이디를 입력하세요.");
+      return;
+    }
+
+    if (users.some(user => user.id === u_id.value.trim())) {
+      showError("err_id", "이미 사용 중인 아이디입니다.");
+      isIdChecked = false;
+    } else {
+      err_txt.textContent = "사용 가능한 아이디입니다.";
+      err_txt.style.color = "green";
+      u_id.disabled = true;
+      document.querySelector(".check").disabled = true;
+      isIdChecked = true; // 중복 체크 완료 상태로 변경
+    }
+  }
+
+  function showError(errorClass, message) {
+    const err_txt = document.querySelector(`.${errorClass}`);
+    if (err_txt) {
+      err_txt.textContent = message;
+      err_txt.style.color = "red";
+    } else {
+      console.error(`Error element '.${errorClass}' not found.`);
+    }
+  }
+
+  function clearError(errorClass) {
+    const err_txt = document.querySelector(`.${errorClass}`);
+    if (err_txt) {
+      err_txt.textContent = "";
+    }
+  }
+
+  function form_check(event) {
+    event.preventDefault();
+    console.log("form_check() 호출됨");
+
+    const u_id = document.getElementById("u_id");
+    const u_password = document.getElementById("pwd");
+    const repwd = document.getElementById("repwd");
+
+    // 필수 항목 검사
+    if (u_id.value.trim() === "" || u_password.value.trim() === "" || repwd.value.trim() === "") {
+      alert("필수 항목을 모두 입력해주세요.");
+      
+      if (u_id.value.trim() === "") showError("err_id", "아이디를 입력하세요.");
+      if (u_password.value.trim() === "") showError("err_pwd", "비밀번호를 입력하세요.");
+      if (repwd.value.trim() === "") showError("err_repwd", "비밀번호 확인을 입력하세요.");
+      
+      return false;
+    }
+
+    // 아이디 중복 체크 확인
+    if (!isIdChecked) {
+      console.log("중복 체크 필요");
+      showError("err_id", "아이디 중복 체크를 해주세요.");
+      return false;
+    }
+
+    // 비밀번호 유효성 검사
+    const pwdValue = u_password.value;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    if (!passwordRegex.test(pwdValue)) {
+      showError("err_pwd", "비밀번호는 최소 8자, 숫자와 영문자를 포함해야 합니다.");
+      return false;
+    } else {
+      clearError("err_pwd");
+    }
+
+    if (pwdValue !== repwd.value) {
+      showError("err_repwd", "비밀번호가 일치하지 않습니다.");
+      return false;
+    } else {
+      clearError("err_repwd");
+    }
+
+    const newUser = {
+      id: u_id.value.trim(),
+      password: pwdValue
+    };
+    users.push(newUser);
+
+    localStorage.setItem("users", JSON.stringify(users));
+    alert("회원가입이 완료되었습니다!");
+    document.getElementById("signupForm").reset();
+
+    // 중복 체크 상태 초기화
+    u_id.disabled = false;
+    document.querySelector(".check").disabled = false;
+    isIdChecked = false;
+
     return false;
-  } else {
-    err_txt.textContent = "사용 가능한 아이디입니다.";
-    err_txt.style.color = "green";
-    return true;
-  }
-}
-
-// 회원가입 폼 유효성 검사 함수
-function form_check() {
-  console.log("form_check() 호출됨"); // 디버깅용
-  const u_id = document.getElementById("u_id");
-  const u_name = document.getElementById("u_name");
-  const u_password = document.getElementById("pwd");
-  const repwd = document.getElementById("repwd");
-  const agree = document.getElementById("agree");
-
-  function showError(element, message) {
-    const err_txt = document.querySelector(`.err_${element.id}`);
-    err_txt.textContent = message;
-    err_txt.style.color = "red";
-    element.focus();
   }
 
-  // 아이디 유효성 검사
-  if (u_id.value.trim() === "") {
-    showError(u_id, " 아이디를 입력하세요.");
-    return false;
-  }
-  if (!checkDuplicateId()) { // 중복 확인
-    u_id.focus();
-    return false;
-  }
-
-  // 이름 유효성 검사
-  if (u_name.value.trim() === "") {
-    showError(u_name, " 이름을 입력하세요.");
-    return false;
-  }
-
-  // 비밀번호 규칙 검사 (최소 8자, 숫자와 영문자 포함)
-  const pwdValue = u_password.value;
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // 최소 8자, 문자와 숫자 포함
-  if (!passwordRegex.test(pwdValue)) {
-    showError(u_password, " 비밀번호는 최소 8자, 숫자와 영문자를 포함해야 합니다.");
-    return false;
-  }
-
-  // 비밀번호 확인 검사
-  if (pwdValue !== repwd.value) {
-    showError(repwd, " 비밀번호가 일치하지 않습니다.");
-    return false;
-  }
-
-  // 약관 동의 확인
-  if (!agree.checked) {
-    alert("약관 동의가 필요합니다.");
-    agree.focus();
-    return false;
-  }
-
-  // 유효성 검사를 통과하면 회원 정보를 배열에 저장
-  const newUser = {
-    id: u_id.value.trim(),
-    name: u_name.value.trim(),
-    password: pwdValue
-  };
-  users.push(newUser); // 배열에 사용자 추가
-
-  // 폼 초기화 및 성공 메시지
-  alert("회원가입이 완료되었습니다!");
-  console.log("회원가입 완료 메시지 출력"); // 디버깅용
-  document.getElementById("signupForm").reset();
-  return false; // 페이지 리로드 방지
-}
-
-// 중복 체크 버튼 클릭 이벤트 리스너 추가
-document.querySelector(".check").addEventListener("click", checkDuplicateId);
+  document.querySelector(".check").addEventListener("click", checkDuplicateId);
+  document.getElementById("signupForm").addEventListener("submit", form_check);
+});
