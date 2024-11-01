@@ -1,9 +1,15 @@
 *,
 *::before,
 *::after {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
+
+}
+
+@font-face {
+  font-family: 'HakgyoansimGeurimilgiTTF-R';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/HakgyoansimGeurimilgiTTF-R.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
 }
 
 body {
@@ -13,14 +19,13 @@ body {
   height: 100vh;
   width: 100%;
   margin: 0;
-  font-family: Arial, sans-serif;
+ font-family: 'HakgyoansimGeurimilgiTTF-R', sans-serif;
 }
 
 .container {
-  width: 90%; /* 화면에 꽉 차지 않도록 설정 */
-  max-width: 900px;
-  height: 1200px;
-  padding: 50px;
+  width: 100%; 
+  height: 100vh;
+  padding: 0;
 }
 
 h1 {
@@ -32,56 +37,77 @@ h1 {
 input, textarea, button {
   outline: none;
   border: none;
+  font-family: 'HakgyoansimGeurimilgiTTF-R', sans-serif;
 }
 
 .notepad {
   position: relative;
-  max-width: 900px;
-  height: 1100px;
+  width: 100%;
+  height: 100%;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  margin: 0;
   align-items: center;
-  background-image: url('/notepad.png');
-  background-size: cover;              /* 기본 설정: 큰 화면에서는 고정 크기 */
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: local;
-  overflow: hidden;                
 }
 
-/* 작은 화면에서 배경 이미지가 줄어들도록 설정 */
+.notepad_wrapper {
+  width: 700px;
+  height: 100%; 
+  justify-content: center;
+  align-items: center;
+  background-image: url('/assets/icon/notepad.png');
+  background-size: cover; /* 화면 비율에 맞춰 채움 */
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  position: relative;
+}
+
 @media (max-width: 900px) {
-  .notepad {
-    background-size: contain;         /* 작은 화면에서는 요소의 크기에 맞추어 조절 */
+  .notepad_wrapper {
+    width: 600px; /* 작은 화면에서는 비율 유지하며 더 큰 폭으로 조정 */
+    height: 100%;
+  }
+
+  .new-memo-btn {
+    top: 10%; /* 작은 화면에서 버튼 위치 조정 */
+    right: 5%;
+  }
+
+  .write-note {
+    top: 15%;
+    right: 5%;
   }
 }
 
-.new-memo-btn{
+.new-memo-btn {
   position: absolute;
-  top: 90px;
-  right: 80px;
+  top: 12%;
+  right: 12%;
   width: 80px;
   height: 30px;
   background-color: #ffffff;
   border-radius: 5px;
-  z-index: 1; /* 배경 이미지 위에 배치 */
+  z-index: 1;
   font-size: 0.9rem;
   cursor: pointer;
   transition: background-color 0.3s;
 }
-.new-memo-btn:hover{
+
+.new-memo-btn:hover {
   background-color: lightcyan;
   color: #333333;
 }
 
 .write-note {
   position: absolute;
-  top: 130px; /* new-memo-btn 아래에 위치시킬 수 있도록 조정 */
-  right: 80px;
+  top: calc(100% * 0.15);
+  right: calc(100% * 0.1);
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 250px; /* 원하는 너비로 설정 */
+  width: 200px;
+  height: 200px;
   background: #fff;
   padding: 15px;
   border-radius: 8px;
@@ -90,79 +116,132 @@ input, textarea, button {
 }
 
 .hidden {
-  display: none; /* 숨김 상태 */
-}
-
-.text {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  width: 100%;
+  display: none;
 }
 
 .add-btn {
+  margin-top: auto;
   padding: 10px;
-  border-radius: 5px; 
-  background-color: #007bff;
-  color: #fff;
+  border-radius: 5px;
+  background-color: #FFFACD;
+  color: #333333;
   cursor: pointer;
   transition: background-color 0.3s;
 }
+
 .add-btn:hover {
-  background-color: #0056b3;
+  background-color: #FFE066;
 }
 
 .memo-box {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
   width: 100%;
+  padding: 20px;
+  position: absolute;
+  top: 20%; /* 백그라운드 이미지에 맞게 위치 조정 */
+  left: 5%; /* 중앙에서 살짝 왼쪽으로 정렬 */
   list-style: none;
-  margin-top: 160px; /* write-note 폼 위치를 고려해 아래로 배치 */
+}
+
+.text {
+  width: 100%;
+  flex: 1; 
 }
 
 .memo-list {
   position: relative;
+  width: 180px; 
+  height: 170px;
   padding: 10px;
-  border-radius: 5px;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
   transform-origin: center;
+  background-color: white;
+  transition: transform 0.3s;
+  margin: 0;
 }
+
 .memo-list:nth-child(even) {
   transform: rotate(-3deg);
 }
+
 .memo-list:nth-child(odd) {
   transform: rotate(3deg);
 }
-.memo-list .memo-paper {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  background-color: #fff;
-  padding: 15px;
-  border-radius: 5px;
-}
-.memo-list .date, .memo-list .text {
-  display: flex;
-}
-.memo-list .text {
-  font-size: 0.9rem;
+
+.memo-list:hover {
+  transform: scale(1.05);
 }
 
-.memo-check {
+.memo-paper {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  background-color: inherit;
+  height: 100%; /* 부모 높이 전체 사용 */
+}
+
+.memo-paper .header {
+  display: flex;
+}
+
+.memo-paper .date {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #555;
+}
+.memo-paper .title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0 0 0 10px;
+  color: #333;
+}
+.memo-paper .text {
+  font-size: 0.s9rem;
+  line-height: 0.7;
+  color: #333;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  margin: 2px;
+  overflow: hidden;
+  height: 100%; /* 텍스트가 전체 칸을 차지하게 함 */
+}
+
+.button-group {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  bottom: 5px; /* 메모지 하단에 배치 */
+  right: 5px; /* 메모지 오른쪽에 배치 */
+  display: flex;
+  gap: 2px;
 }
 
 .edit-btn, .del-btn {
-  padding: 5px 10px;
-  margin-top: 10px;
-  background-color: #f2f2f2;
-  border-radius: 3px;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: none;
   cursor: pointer;
-  font-size: 0.8rem;
+  z-index: 1;
+  filter: grayscale(100%) brightness(0.7); /* 회색으로 변환하고 밝기를 줄임 */
+  transition: filter 0.3s; /* 마우스 호버 시 부드러운 전환 */
 }
+
+
+/* 각각의 버튼에 아이콘 이미지 설정 */
+.edit-btn {
+  background-image: url('/assets/icon/pencil.svg');
+}
+
+.del-btn {
+  background-image: url('/assets/icon/trash.svg');
+}
+
 .edit-btn:hover, .del-btn:hover {
-  background-color: #ddd;
+  filter: grayscale(0%) brightness(1); /* 호버 시 원래 색상 */
 }

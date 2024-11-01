@@ -9,15 +9,16 @@
 <body>
   <div class="container">
     <div class="notepad">
-      <button type="button" class="new-memo-btn">+ 새 메모</button>
-      <form class="write-note hidden">
-        <textarea class="text" placeholder="할 일 작성"></textarea>
-        <button type="submit" class="add-btn">추가</button>
-      </form>
-      <ul class="memo-box">
-        <!-- 메모 아이템들이 여기 추가됩니다 -->
-      </ul>
-      <div class="black-bg hidden"></div>
+      <div class="notepad_wrapper">
+        <button type="button" class="new-memo-btn">+ 새 메모</button>
+        <form class="write-note hidden">
+          <input class="title" type="text" placeholder="할 일 제목" >
+          <textarea class="text" placeholder="할 일 작성"></textarea>
+          <button type="submit" class="add-btn">추가</button>
+        </form>
+        <ul class="memo-box"></ul>
+        <div class="black-bg hidden"></div>
+      </div>
     </div>
   </div>
   <script src="main.js"></script>
