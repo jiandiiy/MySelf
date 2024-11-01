@@ -199,7 +199,7 @@ input, textarea, button {
 }
 .memo-paper .text {
   font-size: 0.s9rem;
-  line-height: 0.7;
+  line-height: 0.9;
   color: #333;
   word-wrap: break-word;
   white-space: pre-wrap;
