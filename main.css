@@ -95,7 +95,9 @@
   color: #ffffff;
 }
 
-
+.error {
+  color: red; /* 에러 메시지를 빨간색으로 표시 */
+}
 
 .wrapper__join{
   margin-top: 80px;
