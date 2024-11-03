@@ -1,4 +1,4 @@
-let memos = [];
+const memos = [];
 let editingMemoId = null; // 현재 수정 중인 메모 ID 저장
 
 const pastelColors = [
@@ -25,16 +25,14 @@ function togglePopup() {
 }
 
 function addMemo() {
-  const title = document.querySelector('.title').value;
-  const text = document.querySelector('.text').value;
-  let date = new Date().toISOString().slice(0, 10);
+  const title = document.querySelector('.title').value.trim() || '제목 없음';
+  const text = document.querySelector('.text').value.trim();
+  const date = new Date().toISOString().slice(0, 10).replace(/-/g, '.'); // 날짜 형식을 2024.10.31로 변경
 
   if (text === '') {
     alert('텍스트를 입력해주세요.');
     return;
   }
-
-  date = date.replace(/-/g, '.'); // 날짜 형식을 2024.10.31로 변경
 
   const memo = {
     id: Date.now(),
@@ -49,59 +47,90 @@ function addMemo() {
   renderMemos();
 }
 
+// DOM 조작 방식 개선: DocumentFragment 사용하여 메모 렌더링 최적화
 function renderMemos() {
   const memoBox = document.querySelector('.memo-box');
-  memoBox.innerHTML = memos.map(memo => `
-    <li class="memo-list" style="background-color: ${memo.color}">
+  const fragment = document.createDocumentFragment();
+
+  memos.forEach(memo => {
+    const li = document.createElement('li');
+    li.className = 'memo-list';
+    li.style.backgroundColor = memo.color;
+
+    li.innerHTML = `
       <div class="memo-paper">
-         <div class="header">
-          <span class="date">${memo.date}</span>
-          <h3 class="title">${memo.title || '제목 없음'}</h3>
+        <div class="header">
+          <span class="date">${escapeHTML(memo.date)}</span>
+          <h3 class="title">${escapeHTML(memo.title)}</h3>
         </div>
-        ${editingMemoId === memo.id ? `
-          <textarea class="edit-text">${memo.text}</textarea>
-          <button class="save-btn" onclick="saveMemo(${memo.id})">수정 완료</button>
-        ` : `
-          <p class="text">${memo.text}</p>
-          <div class="button-group">
-          <button class="edit-btn" onclick="editMemo(${memo.id})"></button>
-          <button class="del-btn" onclick="deleteMemo(${memo.id})"></button>
-        `}
+        <p class="text">${escapeHTML(memo.text)}</p>
+        <div class="button-group">
+          <button class="edit-btn"></button>
+          <button class="del-btn"></button>
+        </div>
       </div>
-    </li>
-  `).join('');
+    `;
+    
+    // Fragment에 li 요소 추가
+    fragment.appendChild(li);
+  });
+
+  // 기존 내용을 비우고, Fragment를 사용하여 DOM 업데이트
+  memoBox.innerHTML = '';
+  memoBox.appendChild(fragment);
+
+  // 이벤트 바인딩: onclick 속성 제거하고 addEventListener 사용
+  document.querySelectorAll('.edit-btn').forEach((btn, index) => {
+    btn.addEventListener('click', () => editMemo(memos[index].id));
+  });
+
+  document.querySelectorAll('.del-btn').forEach((btn, index) => {
+    btn.addEventListener('click', () => deleteMemo(memos[index].id));
+  });
 }
 
+// 메모 삭제
 function deleteMemo(id) {
-  memos = memos.filter(memo => memo.id !== id);
-  saveMemosToLocalStorage(); // 로컬 스토리지에 변경된 메모 목록 저장
+  memos.splice(memos.findIndex(memo => memo.id === id), 1);
+  saveMemosToLocalStorage();
   renderMemos();
 }
 
+// 메모 수정 모드 활성화
 function editMemo(id) {
-  editingMemoId = id; // 현재 수정 중인 메모 ID 설정
-  renderMemos(); // 메모 렌더링을 다시 하여 수정 필드 표시
+  editingMemoId = id;
+  renderMemos();
 }
 
+// 메모 수정 저장
 function saveMemo(id) {
   const editTextarea = document.querySelector('.edit-text');
   const memo = memos.find(memo => memo.id === id);
-  memo.text = editTextarea.value; // 수정된 내용 반영
-  editingMemoId = null; // 수정 모드 종료
-  saveMemosToLocalStorage(); // 로컬 스토리지에 저장
-  renderMemos();
+  if (memo) {
+    memo.text = editTextarea.value;
+    editingMemoId = null; // 수정 모드 종료
+    saveMemosToLocalStorage();
+    renderMemos();
+  }
 }
 
-// 로컬 스토리지에 메모를 저장하는 함수
+// 로컬 스토리지에 메모를 저장
 function saveMemosToLocalStorage() {
   localStorage.setItem('memos', JSON.stringify(memos));
 }
 
-// 로컬 스토리지에서 메모를 불러오는 함수
+// 로컬 스토리지에서 메모 불러오기
 function loadMemosFromLocalStorage() {
   const storedMemos = localStorage.getItem('memos');
   if (storedMemos) {
-    memos = JSON.parse(storedMemos);
-    renderMemos(); // 저장된 메모를 화면에 렌더링
+    memos.push(...JSON.parse(storedMemos));
+    renderMemos();
   }
+}
+
+// XSS 방지 함수
+function escapeHTML(string) {
+  const div = document.createElement('div');
+  div.textContent = string;
+  return div.innerHTML;
 }
